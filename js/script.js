@@ -24,39 +24,37 @@ console.log('JS OK!');
 // con difficoltà 3 => tra 1 e 49
 
 
-const buttonEasy = document.getElementById('easy');
-const buttonMedium = document.getElementById('medium');
-const buttonHard = document.getElementById('hard');
 
-buttonEasy.addEventListener('click', () => startGame(100, 'easy'));
-buttonMedium.addEventListener('click', () => startGame(81, 'medium'));
-buttonHard.addEventListener('click', () => startGame(49, 'hard'));
+// GENERO UN PROGRAMMA PER SVILUPPARE LE CELLE IN UNA GRIGLIA,
+// QUANTE SONO IN BASE ALLA DIFFICOLTà (EASY, MEDIUM, HARD)
+function createElementsInGrid(totalCells, levelClass) {
+    // configurazione del programma 
+    // const totalCells = 100/81/49; -> glielo passo come parametro su argomento
 
-function startGame(totCells, level) {
-    const bombPositions = generateBombs(totCells);
-    createElementsInGrid(totCells, level);
-
-    for (let i = 1; i <= totCells; i++) {
-        const cell = document.getElementById('cell-' + i);
-        cell.addEventListener('click', () => {
-            console.log(i);
-
-            const isBomb = bombPositions.includes(i);
-            if (isBomb) {
-                cell.classList.toggle('bg-blue');
-            } else {
-                cell.classList.toggle('bg-red');
-            }
-
-
-        })
+    // 1. recupero la griglia con l'id
+    const grid = document.getElementById('grid');
+    // resetto il contenuto della griglia
+    grid.innerHTML = '';
+    // 2. creo N(in questo caso 100/81/49) div all'interno della griglia
+    for (let i = 0; i < totalCells; i++) {
+        //      2a. creo l'elemento
+        const cell = document.createElement('div');
+        cell.id = 'cell-' + (i + 1);
+        //      2b. aggiungo eventuali classi CSS per dargli uno stile
+        cell.className = 'cell';
+        cell.classList.add(levelClass);
+        //      2c. associamo il numero da 1 a 100 al testo contenuto nella cella
+        cell.innerText = i + 1;
+        //      2d. aggiungo l'elemento creato alla griglia 
+        grid.appendChild(cell);
     }
 }
 
-// generare 16 numeri casuali nello stesso range (da 1 a totalCells)
+// GENERARE 16 NUMERI CASUALI NELLO STESSO RANGE (DA 1 A TOTALCELLS)
+
 function generateBombs(max) {
     const positions = [];
-
+    // console.log(positions);
 
     while (positions.length < 16) {
         const number = generateRandomNumbers(1, max);
@@ -74,32 +72,45 @@ function generateRandomNumbers(min, max) {
     return Math.floor(Math.random() * range) + min;
 }
 
-function createElementsInGrid(totalCells, levelClass) {
-    // configurazione del programma (per il bonus)
-    // const totalCells = 100; -> glielo passo come parametro su argomento
+// CONFIGURO L'INTERAZIONE DELL'UTENTE MENTRE GIOCA E SCOVA LE BOMBE
 
-    // 1. recupero la griglia con l'id
-    const grid = document.getElementById('grid');
+function startGame(totCells, level) {
+    const bombPositions = generateBombs(totCells);
+    createElementsInGrid(totCells, level);
 
-    // resetto il contenuto della griglia
-    grid.innerHTML = '';
+    for (let i = 1; i <= totCells; i++) {
+        const cell = document.getElementById('cell-' + i);
+        cell.addEventListener('click', () => {
+            console.log(i);
 
-    // 2. creo N(in questo caso 100) div all'interno della griglia
-
-    for (let i = 0; i < totalCells; i++) {
-        //      2a. creo l'elemento
-        const cell = document.createElement('div');
-        cell.id = 'cell-' + (i + 1);
-        //      2b. aggiungo eventuali classi CSS per dargli uno stile
-        cell.className = 'cell';
-        cell.classList.add(levelClass);
-        //      2c. associamo il numero da 1 a 100 al testo contenuto nella cella
-        cell.innerText = i + 1;
-        //      2d. aggiungo l'elemento creato alla griglia 
-        grid.appendChild(cell);
-        //      2e. aggiungo un Listener sul click dell'elemento
-
+            const isBomb = bombPositions.includes(i);
+            if (isBomb) {
+                cell.classList.toggle('bg-red');
+            } else {
+                cell.classList.toggle('bg-blue');
+            }
+        })
     }
 }
 
+// LISTENER DEI PULSANTI 
 
+const buttonEasy = document.getElementById('easy');
+const buttonMedium = document.getElementById('medium');
+const buttonHard = document.getElementById('hard');
+
+buttonEasy.addEventListener('click', () => startGame(100, 'easy'));
+buttonMedium.addEventListener('click', () => startGame(81, 'medium'));
+buttonHard.addEventListener('click', () => startGame(49, 'hard'));
+
+
+// In seguito l'utente clicca su una cella: se il numero è presente nella lista dei numeri 
+// generati - abbiamo calpestato una bomba - la cella si colora di rosso e la partita termina, 
+// altrimenti la cella cliccata si colora di azzurro e l'utente può continuare a cliccare sulle 
+// altre celle.
+
+function endGame(end) {
+    startGame(totCells, level);
+
+    if ( )
+}
