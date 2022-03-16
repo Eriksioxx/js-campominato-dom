@@ -1,0 +1,41 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#grid {
+    width: 500px;
+    height: 500px;
+    margin: 50px auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cell {
+    background-color: beige;
+    text-align: center;
+}
+
+.bg-blue {
+    background-color: aqua;
+}
+
+.bg-red {
+    background-color: red;
+}
+
+.cell.hard {
+    width: calc(100% / 7);
+    height: calc(100% / 7);
+}
+
+.cell.medium {
+    width: calc(100% / 9);
+    height: calc(100% / 9);
+}
+
+.cell.easy {
+    width: calc(100% / 10);
+    height: calc(100% / 10);
+}
