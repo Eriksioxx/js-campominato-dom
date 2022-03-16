@@ -86,6 +86,9 @@ function startGame(totCells, level) {
             const isBomb = bombPositions.includes(i);
             if (isBomb) {
                 cell.classList.toggle('bg-red');
+                grid.innerHTML = '';
+
+                console.log(alert('The End!'));
             } else {
                 cell.classList.toggle('bg-blue');
             }
@@ -104,13 +107,7 @@ buttonMedium.addEventListener('click', () => startGame(81, 'medium'));
 buttonHard.addEventListener('click', () => startGame(49, 'hard'));
 
 
-// In seguito l'utente clicca su una cella: se il numero è presente nella lista dei numeri 
-// generati - abbiamo calpestato una bomba - la cella si colora di rosso e la partita termina, 
-// altrimenti la cella cliccata si colora di azzurro e l'utente può continuare a cliccare sulle 
+// In seguito l'utente clicca su una cella: se il numero è presente nella lista dei numeri
+// generati - abbiamo calpestato una bomba - la cella si colora di rosso e la partita termina,
+// altrimenti la cella cliccata si colora di azzurro e l'utente può continuare a cliccare sulle
 // altre celle.
-
-function endGame(end) {
-    startGame(totCells, level);
-
-    if ( )
-}
