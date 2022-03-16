@@ -25,6 +25,10 @@
     background-color: red;
 }
 
+.end-event {
+pointer-events:none;
+}
+
 .cell.hard {
     width: calc(100% / 7);
     height: calc(100% / 7);
@@ -39,3 +43,7 @@
     width: calc(100% / 10);
     height: calc(100% / 10);
 }
+
+/* #grid > .cell {
+    background-image:url("https://picsum.photos/200/300");
+} */

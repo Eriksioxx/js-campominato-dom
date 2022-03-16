@@ -54,7 +54,9 @@ function createElementsInGrid(totalCells, levelClass) {
 
 function generateBombs(max) {
     const positions = [];
-    // console.log(positions);
+
+    // Mostra posizione bombe 
+    console.log(positions);
 
     while (positions.length < 16) {
         const number = generateRandomNumbers(1, max);
@@ -80,15 +82,16 @@ function startGame(totCells, level) {
 
     for (let i = 1; i <= totCells; i++) {
         const cell = document.getElementById('cell-' + i);
+
         cell.addEventListener('click', () => {
             console.log(i);
 
             const isBomb = bombPositions.includes(i);
             if (isBomb) {
                 cell.classList.toggle('bg-red');
-                grid.innerHTML = '';
+                // document.querySelectorAll('#grid > .cell').classList.add('bg-red');
 
-                console.log(alert('The End!'));
+
             } else {
                 cell.classList.toggle('bg-blue');
             }
