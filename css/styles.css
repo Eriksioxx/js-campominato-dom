@@ -10,7 +10,14 @@
     margin: 50px auto;
     display: flex;
     flex-wrap: wrap;
+
+    cursor: pointer;
 }
+
+#grid.game-over {
+    pointer-events: none;
+}
+
 
 .cell {
     background-color: beige;
@@ -44,6 +51,3 @@ pointer-events:none;
     height: calc(100% / 10);
 }
 
-/* #grid > .cell {
-    background-image:url("https://picsum.photos/200/300");
-} */

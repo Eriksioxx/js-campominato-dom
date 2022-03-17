@@ -33,26 +33,33 @@ function createElementsInGrid(totalCells, levelClass) {
 
     // 1. recupero la griglia con l'id
     const grid = document.getElementById('grid');
-    // resetto il contenuto della griglia
+
+    // resetto il contenuto della griglia, e ripristino l'interazione con l'utente
     grid.innerHTML = '';
+    grid.classList.remove('game-over');
     // 2. creo N(in questo caso 100/81/49) div all'interno della griglia
     for (let i = 0; i < totalCells; i++) {
+
         //      2a. creo l'elemento
-        const cell = document.createElement('div');
-        cell.id = 'cell-' + (i + 1);
+        const cell = document.createElement('div');// <div></div>
+        // cell.id = 'cell-' + (i + 1);// <div id="cell-N"></div>
+
         //      2b. aggiungo eventuali classi CSS per dargli uno stile
-        cell.className = 'cell';
-        cell.classList.add(levelClass);
+        cell.className = 'cell'; // <div id="cell-N" class="cell"></div>
+        cell.classList.add(levelClass);// <div id="cell-N" class="cell easy"></div>
+
         //      2c. associamo il numero da 1 a 100 al testo contenuto nella cella
-        cell.innerText = i + 1;
+        cell.innerText = i + 1;// <div id="cell-N" class="cell easy">1</div>
+
         //      2d. aggiungo l'elemento creato alla griglia 
         grid.appendChild(cell);
     }
 }
 
-// GENERARE 16 NUMERI CASUALI NELLO STESSO RANGE (DA 1 A TOTALCELLS)
+// GENERARE 16 NUMERI CASUALI NELLO STESSO RANGE (DA 1 A totalCells)
 
 function generateBombs(max) {
+
     const positions = [];
 
     // Mostra posizione bombe 
@@ -69,35 +76,94 @@ function generateBombs(max) {
     return positions;
 }
 
+// GENERATORE RANDOM NUMERI DEFAULT
 function generateRandomNumbers(min, max) {
     const range = max - min + 1;
     return Math.floor(Math.random() * range) + min;
 }
 
 // CONFIGURO L'INTERAZIONE DELL'UTENTE MENTRE GIOCA E SCOVA LE BOMBE
-
 function startGame(totCells, level) {
-    const bombPositions = generateBombs(totCells);
+
+    //  genero la griglia
     createElementsInGrid(totCells, level);
 
-    for (let i = 1; i <= totCells; i++) {
-        const cell = document.getElementById('cell-' + i);
+    // genero la posizione delle bombe all'interno della griglia
+    // bombPositionsè un array che contiene numeri da 1 a N
+    const bombPositions = generateBombs(totCells);
+    console.log(bombPositions);
 
+    addClickToCells(bombPositions);
+
+}
+
+function addClickToCells(bombs) {
+
+    let punteggio = 0;
+
+    const allCells = document.querySelectorAll('.cell');
+
+    for (let i = 0; i < allCells.length; i++) {
+        const cell = allCells[i];
+        // se comba la cella si colora di rosso
+        // altrimenti di azzurro
         cell.addEventListener('click', () => {
-            console.log(i);
+            const gameOver = checkClick(cell, i, bombs);
 
-            const isBomb = bombPositions.includes(i);
-            if (isBomb) {
-                cell.classList.toggle('bg-red');
-                // document.querySelectorAll('#grid > .cell').classList.add('bg-red');
-
-
+            if (gameOver) {
+                blockCells();
+                showBombs(bombs);
             } else {
-                cell.classList.toggle('bg-blue');
+                punteggio++;
+
+                const notCellBombs = allCells.length - bombs.length;
+                if (punteggio >= notCellBombs) {
+                    blockCells();
+                    showScore(punteggio);
+                }
             }
-        })
+        });
     }
 }
+
+function showScore(points) {
+    alert('Bravo! Hai fatto ' + points + 'punti!');
+}
+
+function showBombs(bombsToShow) {
+    const allCells = document.querySelectorAll('.cell');
+
+    for (let i = 0; i < allCells.length; i++) {
+        if (bombsToShow.includes(i + 1)) {
+            const bombcell = allCells[i];
+            bombcell.classList.add('bg-red');
+        }
+    }
+}
+
+function blockCells() {
+    const grid = document.getElementById('grid');
+    grid.classList.add('game-over');
+}
+
+
+// controllo se l'utente ha cliccato una bomba, se sì ritorno true, se no ritorno false;
+// aggiungo anche la classe all'element in base al click
+
+function checkClick(cellsTarget, cellIndex, bombPlaces) {
+    console.log(cellIndex + 1);
+    const isBomb = bombPlaces.includes(cellIndex + 1) === true;
+
+    if (isBomb) {
+        cellsTarget.classList.toggle('bg-red');
+
+    } else {
+        cellsTarget.classList.toggle('bg-blue');
+    }
+
+    return isBomb;
+}
+
 
 // LISTENER DEI PULSANTI 
 
@@ -108,7 +174,6 @@ const buttonHard = document.getElementById('hard');
 buttonEasy.addEventListener('click', () => startGame(100, 'easy'));
 buttonMedium.addEventListener('click', () => startGame(81, 'medium'));
 buttonHard.addEventListener('click', () => startGame(49, 'hard'));
-
 
 // In seguito l'utente clicca su una cella: se il numero è presente nella lista dei numeri
 // generati - abbiamo calpestato una bomba - la cella si colora di rosso e la partita termina,
