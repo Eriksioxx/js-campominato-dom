@@ -113,6 +113,8 @@ function addClickToCells(bombs) {
             if (gameOver) {
                 blockCells();
                 showBombs(bombs);
+
+                alert('Hai perso, ritenta!!');
             } else {
                 punteggio++;
 
